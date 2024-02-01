@@ -1,0 +1,258 @@
+@startuml
+
+
+digraph g {
+    rankdir="tb"
+    splines=polyline
+
+
+'nodes
+subgraph cluster_1379209310 {
+   	label=services
+	labeljust=l
+	fillcolor="#ececec"
+	style=filled
+
+   expensesservice1178841431[
+	label=<<table border="1" cellborder="0" cellpadding="4" cellspacing="0">
+<tr><td align="left" >(c)expensesservice</td></tr>
+<hr/>
+<tr><td align="left" >-   grouprepository: grouprepository [0..1]</td></tr>
+<tr><td align="left" >-   transactionrepository: transactionrepository [0..1]</td></tr>
+<tr><td align="left" >-   userrepository: userrepository [0..1]</td></tr>
+<hr/>
+<tr><td align="left" >+ appendtransactioncategory(categoryname: string, map: map&lt;user, double&gt;): string</td></tr>
+<tr><td align="left" >+ gettotalamountperuser(user: user, group: group): map&lt;user, double&gt;</td></tr>
+<tr><td align="left" >+ getstatus(username: string): string</td></tr>
+<tr><td align="left" >+ split(givername: string, takername: string, amount: double, reason: string): string</td></tr>
+<tr><td align="left" >+ splitgroup(givername: string, groupname: string, amount: double, reason: string): string</td></tr>
+</table>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#ffffff"
+];
+
+friendshipservice1178841431[
+	label=<<table border="1" cellborder="0" cellpadding="4" cellspacing="0">
+<tr><td align="left" >(c)friendshipservice</td></tr>
+<hr/>
+<tr><td align="left" >-   friendshiprepository: friendshiprepository [0..1]</td></tr>
+<tr><td align="left" >-   userrepository: userrepository [0..1]</td></tr>
+<hr/>
+<tr><td align="left" >+ addfriend(userusername: string, friendusername: string): string</td></tr>
+<tr><td align="left" >+ getallfriendslist(userusername: string): string</td></tr>
+</table>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#ffffff"
+];
+
+groupservice1178841431[
+	label=<<table border="1" cellborder="0" cellpadding="4" cellspacing="0">
+<tr><td align="left" >(c)groupservice</td></tr>
+<hr/>
+<tr><td align="left" >-   friendshiprepository: friendshiprepository [0..1]</td></tr>
+<tr><td align="left" >-   grouprepository: grouprepository [0..1]</td></tr>
+<tr><td align="left" >-   userrepository: userrepository [0..1]</td></tr>
+<hr/>
+<tr><td align="left" >+ creategroup(groupname: string, users: arraylist&lt;string&gt;, userusername: string): string</td></tr>
+<tr><td align="left" >+ getgroups(participant: user): string</td></tr>
+</table>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#ffffff"
+];
+
+logger1178841431[
+	label=<<table border="1" cellborder="0" cellpadding="4" cellspacing="0">
+<tr><td align="left" >(c)logger</td></tr>
+<hr/>
+<tr><td align="left" >- flushbuffer(filename: string, buffer: stringbuilder)</td></tr>
+<tr><td align="left" >+ log(message: string, user: string)</td></tr>
+<tr><td align="left" >+ logerror(errormessage: string, exception: exception)</td></tr>
+</table>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#ffffff"
+];
+
+usermanager1178841431[
+	label=<<table border="1" cellborder="0" cellpadding="4" cellspacing="0">
+<tr><td align="left" >(c)usermanager</td></tr>
+<hr/>
+<tr><td align="left" >-   userrepository: userrepository [0..1]</td></tr>
+<hr/>
+<tr><td align="left" >+ isvalidstring(str: string): boolean</td></tr>
+<tr><td align="left" >+ loginuser(username: string, password: string): map&lt;string, boolean&gt;</td></tr>
+<tr><td align="left" >+ registeruser(username: string, password: string, userusername: string): string</td></tr>
+</table>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#ffffff"
+];
+}
+
+subgraph cluster_1950800714 {
+   	label=repository
+	labeljust=l
+	fillcolor="#ececec"
+	style=filled
+
+   friendshiprepository385331925[
+	label=<<table border="1" cellborder="0" cellpadding="4" cellspacing="0">
+<tr><td align="left" >(c)friendshiprepository</td></tr>
+<hr/>
+<tr><td align="left" >+ addnewfriendship(friendship: friendship)</td></tr>
+<tr><td align="left" >+ createnewfriendship(from: user, to: user): friendship</td></tr>
+<tr><td align="left" >+ getallfriendships(user: user): list&lt;friendship&gt;</td></tr>
+</table>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#ffffff"
+];
+
+
+
+grouprepository385331925[
+	label=<<table border="1" cellborder="0" cellpadding="4" cellspacing="0">
+<tr><td align="left" >(c)grouprepository</td></tr>
+<hr/>
+<tr><td align="left" >+ creategroup(group: group)</td></tr>
+<tr><td align="left" >+ getallgroups(user: user): list&lt;group&gt;</td></tr>
+</table>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#ffffff"
+];
+
+repositorybase385331925[
+	label=<<table border="1" cellborder="0" cellpadding="4" cellspacing="0">
+<tr><td align="left" >(c)repositorybase</td></tr>
+<hr/>
+<tr><td align="left" >+   manager: entitymanager [0..1]</td></tr>
+</table>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#ffffff"
+];
+
+transactionrepository385331925[
+	label=<<table border="1" cellborder="0" cellpadding="4" cellspacing="0">
+<tr><td align="left" >(c)transactionrepository</td></tr>
+<hr/>
+<tr><td align="left" >+ closeentitymanagerfactory()</td></tr>
+<tr><td align="left" >+ createtransaction(moneyflowtransaction: moneyflow)</td></tr>
+<tr><td align="left" >+ getowedmoneyfrom(user: user): map&lt;user, double&gt;</td></tr>
+<tr><td align="left" >+ getowedmoneyfrom(user: user, group: group): map&lt;user, double&gt;</td></tr>
+<tr><td align="left" >+ getowedmoneyto(user: user): map&lt;user, double&gt;</td></tr>
+<tr><td align="left" >+ getowedmoneyto(user: user, group: group): map&lt;user, double&gt;</td></tr>
+<tr><td align="left" >+ getwantedgroup(groupname: string): group</td></tr>
+<tr><td align="left" >+ getwantedgroupmembers(groupname: string): list&lt;user&gt;</td></tr>
+<tr><td align="left" >- totalamountbyuser(objectlist: list&lt;object[]&gt;): map&lt;user, double&gt;</td></tr>
+</table>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#ffffff"
+];
+
+userrepository385331925[
+	label=<<table border="1" cellborder="0" cellpadding="4" cellspacing="0">
+<tr><td align="left" >(c)userrepository</td></tr>
+<hr/>
+<tr><td align="left" >+ closeentitymanagerfactory()</td></tr>
+<tr><td align="left" >+ createuser(user: user)</td></tr>
+<tr><td align="left" >+ getuserbyid(userid: long): user</td></tr>
+<tr><td align="left" >+ getuserbyusername(username: string): user</td></tr>
+</table>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#ffffff"
+];
+}
+
+subgraph cluster_905826493 {
+   	label=server
+	labeljust=l
+	fillcolor="#ececec"
+	style=filled
+
+   clienthandler905826493[
+	label=<<table border="1" cellborder="0" cellpadding="4" cellspacing="0">
+<tr><td align="left" >(c)clienthandler</td></tr>
+<hr/>
+<tr><td align="left" >-   friendshiprepository: friendshiprepository [0..1]</td></tr>
+<tr><td align="left" >-   grouprepository: grouprepository [0..1]</td></tr>
+<tr><td align="left" >-   isloggedin: boolean [1]</td></tr>
+<tr><td align="left" >-   reader: bufferedreader [0..1]</td></tr>
+<tr><td align="left" >-   transactionrepository: transactionrepository [0..1]</td></tr>
+<tr><td align="left" >-   userrepository: userrepository [0..1]</td></tr>
+<tr><td align="left" >-   userusername: string [0..1]</td></tr>
+<tr><td align="left" >-   writer: printwriter [0..1]</td></tr>
+<hr/>
+<tr><td align="left" >+ handlecommand(command: string): string</td></tr>
+<tr><td align="left" >- hashpassword(password: string): string</td></tr>
+</table>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#ffffff"
+];
+
+server905826493[
+	label=<<table border="1" cellborder="0" cellpadding="4" cellspacing="0">
+<tr><td align="left" >(c)server</td></tr>
+<hr/>
+<tr><td align="left" >- handleacceptableevent(serversocketchannel: serversocketchannel, selector: selector)</td></tr>
+<tr><td align="left" >- handlereadableevent(clientchannel: socketchannel)</td></tr>
+<tr><td align="left" >+ main(args: string[])</td></tr>
+<tr><td align="left" >- sendresponse(clientchannel: socketchannel, message: string, buffer: bytebuffer)</td></tr>
+<tr><td align="left" >+ startserverchannel()</td></tr>
+</table>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#ffffff"
+];
+}
+
+repositoryimplementationmapping[
+	label=<<table border="1" cellborder="0" cellpadding="4" cellspacing="0">
+<tr><td align="left" >(c)repositoryimplementationmapping</td></tr>
+<hr/>
+<tr><td align="left" >+ mapofclasses: class,object </td></tr>
+<hr/>
+<tr><td align="left" >+ addorreplace(object o)</td></tr>
+<tr><td align="left" >+ get(class c)</td></tr>
+</table>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#ffffff"
+];
+
+server905826493 -> repositoryimplementationmapping [label="creates and maps implementations"]
+'edges
+repositoryimplementationmapping -> expensesservice1178841431;
+repositoryimplementationmapping  -> groupservice1178841431[];
+repositoryimplementationmapping -> usermanager1178841431[];
+repositoryimplementationmapping -> repositorybase385331925[];
+clienthandler905826493 -> friendshipservice1178841431[];
+clienthandler905826493 -> groupservice1178841431[];
+friendshipservice1178841431 -> usermanager1178841431[];
+groupservice1178841431 -> usermanager1178841431[];
+server905826493 -> clienthandler905826493[];
+usermanager1178841431 -> userrepository385331925[label="userrepository
+[0..1]"];
+
+}
+@enduml

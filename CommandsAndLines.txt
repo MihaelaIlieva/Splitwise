@@ -1,0 +1,16 @@
+register m 1
+register n 1
+register k 1
+login m 1
+create-group newgroup m n k
+split-group newgroup 15 reason
+split 10 n reason
+get-status
+logout
+login n 1
+split 2.5 m reason
+split-group newgroup 1.24 reason
+get-status
+
+java -jar D:\SplitWise\out\artifacts\SplitwiseServer_jar\Splitwise.jar
+java -jar D:\SplitWise\out\artifacts\SplitwiseClient_jar\ClientModule.jar
